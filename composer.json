@@ -1,0 +1,21 @@
+{
+    "name": "intaro/phpci-redmine-plugin",
+    "description": "PHPCI plugin for Redmine integration",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ilyas Salikhov",
+            "email": "salikhov@intaro.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/yaml": "~2.1"
+    },
+    "target-dir": "Intaro/PHPCI/Plugin",
+    "autoload": {
+        "psr-0": {
+            "Intaro\\PHPCI\\Plugin": ""
+        }
+    }
+}

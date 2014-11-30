@@ -1,0 +1,6 @@
+en:
+    passed: "Build \"successful\":%s."
+    failed: "Build \"failed\":%s."
+ru:
+    passed: "Все четко. Тесты \"прошли\":%s."
+    failed: "Увы, но тесты \"не прошли\":%s."
