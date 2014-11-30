@@ -120,10 +120,10 @@ class Redmine implements \PHPCI\Plugin
                     }
                 } else {
                     $issue['status_id'] = $this->status;
+                    if ($this->percent) {
+                        $issue['done_ratio'] = $this->percent;
+                    }
                 }
-            }
-            if ($this->percent) {
-                $issue['done_ratio'] = $this->percent;
             }
 
         } elseif (self::STATUS_FAILED == $this->build->getStatus()) {
