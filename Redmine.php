@@ -115,6 +115,9 @@ class Redmine implements \PHPCI\Plugin
                         if (isset($response['issue']['status']['id'])) {
                             if ($this->prevStatus == $response['issue']['status']['id']) {
                                 $issue['status_id'] = $this->status;
+                                if ($this->percent) {
+                                    $issue['done_ratio'] = $this->percent;
+                                }
                             }
                         }
                     }
