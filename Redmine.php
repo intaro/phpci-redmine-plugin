@@ -109,7 +109,7 @@ class Redmine implements \PHPCI\Plugin
                     curl_setopt($ch, CURLOPT_TIMEOUT, 30); // times out after 30s
 
                     $response = curl_exec($ch);
-                    $response = json_decode($response);
+                    $response = json_decode($response, true);
 
                     if ($response) {
                         if (isset($response['issue']['status']['id'])) {
