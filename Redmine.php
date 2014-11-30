@@ -24,6 +24,7 @@ class Redmine implements \PHPCI\Plugin
     protected $enabled = true;
 
     protected $status;
+    protected $prevStatus;
     protected $percent;
 
     protected $lang = 'en';
@@ -49,6 +50,9 @@ class Redmine implements \PHPCI\Plugin
         }
         if (isset($options['status'])) {
             $this->status = $options['status'];
+        }
+        if (isset($options['prev_status'])) {
+            $this->prevStatus = $options['prev_status'];
         }
         if (isset($options['percent'])) {
             $this->percent = $options['percent'];
@@ -91,7 +95,32 @@ class Redmine implements \PHPCI\Plugin
             $issue['notes'] .= sprintf($this->messages['passed'], $buildLink) . "\n";
 
             if ($this->status) {
-                $issue['status_id'] = $this->status;
+                if ($this->prevStatus) {
+                    $headers = array(
+                        'Content-Type: application/json',
+                        'X-Redmine-API-Key: ' . $this->apiKey,
+                    );
+
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_FAILONERROR, false);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // return into a variable
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 30); // times out after 30s
+
+                    $response = curl_exec($ch);
+                    $response = json_decode($response);
+
+                    if ($response) {
+                        if (isset($response['issue']['status']['id'])) {
+                            if ($this->prevStatus == $response['issue']['status']['id']) {
+                                $issue['status_id'] = $this->status;
+                            }
+                        }
+                    }
+                } else {
+                    $issue['status_id'] = $this->status;
+                }
             }
             if ($this->percent) {
                 $issue['done_ratio'] = $this->percent;
